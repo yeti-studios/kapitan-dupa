@@ -1,11 +1,10 @@
 
-#include <axxegro/axxegro.hpp>
-
-
 #include "game/entities/Pedal7.hpp"
 #include "engine/Activity.hpp"
 #include "engine/Engine.hpp"
 #include "game/activities/MenuActivity.hpp"
+#include "game/activities/HighscoresActivity.hpp"
+#include "game/activities/GameActivity.hpp"
 
 int main(int, char**) 
 {
@@ -15,6 +14,8 @@ int main(int, char**)
 
     Engine engine {{}};
 	engine.createActivity<MenuActivity>("mainmenu");
+	engine.createActivity<GameActivity>("game");
+	engine.createActivity<HighscoresActivity>("highscores");
 	engine.switchToActivity("mainmenu");
 
 

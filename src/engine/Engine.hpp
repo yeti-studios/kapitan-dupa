@@ -1,23 +1,19 @@
 //
 // Created by volt on 2023-02-20.
 //
+#include <kptdup_pch.hpp>
 
 #ifndef KPTDUPA_ENGINE_HPP
 #define KPTDUPA_ENGINE_HPP
 
-#include <memory>
-#include <unordered_map>
-
-#include <axxegro/axxegro.hpp>
-#include <axxegro/display/DisplayModes.hpp>
-
-#include "Activity.hpp"
 #include "StringMap.hpp"
 #include "Exception.hpp"
 
+#include "Activity.hpp"
+
 struct EngineOptions {
 	al::Vec2i displaySize = {800, 600};
-	std::optional<int> maxFramerate = 120;
+	std::optional<int> maxFramerate = 165;
 
 
 
@@ -35,7 +31,7 @@ public:
 		if(activities.contains(name)) {
 			throw EngineException("Cannot create activity with duplicate name {}", name);
 		}
-		auto act =  std::unique_ptr<Activity>(new T());
+		auto act = std::shared_ptr<Activity>(new T());
 		act->setEngine(this);
 		act->init();
 		activities[std::string(name)] = std::move(act);
@@ -45,17 +41,20 @@ public:
 	void switchToActivity(std::string_view name);
 
 	void run();
+	al::Font& font();
 
 	const EngineOptions& getOptions();
+	void setExitFlag();
 private:
+	al::Display disp;
 	Activity* currentActivity;
-	StringMap<std::unique_ptr<Activity>> activities;
+	StringMap<std::shared_ptr<Activity>> activities;
 
 	EngineOptions options;
+	al::Font defaultFont;
 
 	bool exitFlag = false;
 
-	al::Display disp;
 	al::Timer framerateLimitTimer;
 	al::EventQueue inputEventQueue;
 	al::EventQueue timerEventQueue;

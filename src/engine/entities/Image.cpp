@@ -6,17 +6,29 @@
 
 void Image::render()
 {
-	bitmap->drawScaled(bitmap->rect(), this->rect);
+	if(bitmap.get()) {
+		bitmap->drawTintedScaled(this->tint, bitmap->rect(), this->rect());
+	}
 }
 
 Image::Image(const std::shared_ptr<al::Bitmap> &bitmap)
 	: bitmap(bitmap)
 {
-	rect = bitmap->rect();
+	setRect(bitmap->rect());
 }
 
 Image::Image(const std::string &imgPath)
 	: bitmap(std::make_shared<al::Bitmap>(imgPath))
 {
-	rect = bitmap->rect();
+	setRect(bitmap->rect());
+}
+
+void Image::update()
+{
+
+}
+
+void Image::handle(const ALLEGRO_EVENT &ev)
+{
+
 }

@@ -2,8 +2,6 @@
 // Created by volt on 2023-02-18.
 //
 
-#include <vector>
-#include <algorithm>
 #include "Activity.hpp"
 
 Entity * Activity::getEntityByName(const std::string &name)
@@ -16,6 +14,9 @@ Entity * Activity::getEntityByName(const std::string &name)
 
 void Activity::dispatchEvent(const ALLEGRO_EVENT &ev)
 {
+	if(handleEvent(ev)) {
+		return;
+	}
 	for(auto& [entityId, entity]: entities) {
 		entity->handle(ev);
 	}
@@ -36,4 +37,42 @@ void Activity::renderAllEntities()
 void Activity::setEngine(Engine *pEngine)
 {
 	this->engine = pEngine;
+}
+
+bool Activity::addEntity(const std::string_view name, const std::shared_ptr<Entity>& entity)
+{
+	if(not entities.contains(name)) {
+		entities.insert({std::string(name), entity});
+		entity->setActivity(this);
+		return true;
+	}
+	return false;
+}
+
+void Activity::updateAllEntities()
+{
+	for(auto& [entityId, entity]: entities) {
+		entity->update();
+	}
+}
+
+Engine *Activity::getEngine() const
+{
+	return engine;
+}
+
+bool Activity::handleEvent(const ALLEGRO_EVENT &ev)
+{
+	return false;
+}
+
+void Activity::triggerStart()
+{
+	startTime = al::GetTime();
+	start();
+}
+
+double Activity::timeSinceStart() const
+{
+	return al::GetTime() - startTime;
 }

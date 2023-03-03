@@ -1,14 +1,11 @@
 //
 // Created by volt on 2023-02-25.
 //
+#include <kptdup_pch.hpp>
 
 #ifndef KPTDUPA_STRINGMAP_HPP
 #define KPTDUPA_STRINGMAP_HPP
 
-#include <stdint.h>
-#include <unordered_map>
-#include <string_view>
-#include <string>
 
 struct StrHash {
 	using is_transparent = void;

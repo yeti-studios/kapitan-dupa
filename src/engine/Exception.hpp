@@ -1,12 +1,11 @@
 //
 // Created by volt on 2023-02-25.
 //
+#include <kptdup_pch.hpp>
 
 #ifndef KPTDUPA_EXCEPTION_HPP
 #define KPTDUPA_EXCEPTION_HPP
 
-#include <stdexcept>
-#include <format>
 
 struct Exception: public std::runtime_error {
 	using std::runtime_error::runtime_error;

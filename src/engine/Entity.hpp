@@ -5,7 +5,10 @@
 #ifndef KPTDUPA_ENTITY_HPP
 #define KPTDUPA_ENTITY_HPP
 
-#include <axxegro/event/EventQueue.hpp>
+#include <kptdup_pch.hpp>
+
+class Activity;
+class Engine;
 
 class Entity {
 public:
@@ -16,7 +19,13 @@ public:
 	virtual ~Entity() = default;
 
 	int zIndex = 0;
+
+	Activity* getActivity() const;
+	Engine* getEngine() const;
 private:
+	friend class Activity;
+	Activity* activity;
+	void setActivity(Activity* activity1);
 
 };
 

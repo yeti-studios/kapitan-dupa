@@ -4,8 +4,6 @@
 
 #include "Engine.hpp"
 
-#include <nlohmann/json.hpp>
-
 EngineOptions EngineOptions::parse(const std::string_view json)
 {
 	throw NotImplementedException("");
@@ -19,6 +17,7 @@ std::string EngineOptions::toJSON() const
 Engine::Engine(const EngineOptions &options)
 	: options(options),
 	  currentActivity(nullptr),
+	  defaultFont("res/neuropol.ttf", 18),
 	  disp(options.displaySize.x, options.displaySize.y),
 	  framerateLimitTimer(1.0 / options.maxFramerate.value_or(120.0))
 {
@@ -31,6 +30,10 @@ Engine::Engine(const EngineOptions &options)
 		framerateLimitTimer.start();
 	}
 
+	static al::Bitmap mouseCursorBitmap("res/img/mouse.png");
+	static al::MouseCursor mouseCursor(mouseCursorBitmap, {0,0});
+
+	disp.setCursor(mouseCursor);
 	disp.setTitle("Kapitan Dupa");
 }
 
@@ -48,7 +51,7 @@ void Engine::switchToActivity(const std::string_view name)
 			currentActivity->stop();
 		}
 		currentActivity = newActivity;
-		currentActivity->start();
+		currentActivity->triggerStart();
 	}
 }
 
@@ -61,9 +64,8 @@ void Engine::run()
 		}
 	});
 	auto exitHandler = [&](const ALLEGRO_EVENT& ev){exitFlag = true;};
-	auto keybDiscrId = dispatcher.addDiscretizer({ALLEGRO_EVENT_KEY_DOWN, [](const ALLEGRO_EVENT& ev){return ev.keyboard.keycode;}});
+	//auto keybDiscrId = dispatcher.addDiscretizer({ALLEGRO_EVENT_KEY_DOWN, [](const ALLEGRO_EVENT& ev){return ev.keyboard.keycode;}});
 
-	dispatcher.setEventValueHandler(keybDiscrId, ALLEGRO_KEY_ESCAPE, exitHandler);
 	dispatcher.setEventTypeHandler(ALLEGRO_EVENT_DISPLAY_CLOSE, exitHandler);
 
 
@@ -81,6 +83,7 @@ void Engine::run()
 
 		if(currentActivity) {
 			currentActivity->tick();
+			currentActivity->updateAllEntities();
 			currentActivity->renderAllEntities();
 		}
 
@@ -93,4 +96,14 @@ void Engine::run()
 const EngineOptions &Engine::getOptions()
 {
 	return options;
+}
+
+al::Font &Engine::font()
+{
+	return defaultFont;
+}
+
+void Engine::setExitFlag()
+{
+	exitFlag = true;
 }

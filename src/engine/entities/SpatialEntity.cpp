@@ -6,10 +6,20 @@
 
 al::Vec2f SpatialEntity::getPos() const
 {
-	return rect.a;
+	return rect_.a;
 }
 
 al::Vec2f SpatialEntity::getSize() const
 {
-	return rect.size();
+	return rect_.size();
+}
+
+al::Rect<float>& SpatialEntity::rect()
+{
+	return rect_;
+}
+
+void SpatialEntity::setRect(al::Rect<float> rect)
+{
+	rect_ = rect;
 }
