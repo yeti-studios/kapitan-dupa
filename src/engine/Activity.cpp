@@ -44,6 +44,7 @@ bool Activity::addEntity(const std::string_view name, const std::shared_ptr<Enti
 	if(not entities.contains(name)) {
 		entities.insert({std::string(name), entity});
 		entity->setActivity(this);
+		entity->spawnTime = al::GetTime();
 		return true;
 	}
 	return false;
@@ -75,4 +76,40 @@ void Activity::triggerStart()
 double Activity::timeSinceStart() const
 {
 	return al::GetTime() - startTime;
+}
+
+void Activity::preRender()
+{
+
+}
+
+void Activity::postRender()
+{
+
+}
+
+void Activity::commonTick()
+{
+	std::vector<std::string> deadKeys;
+	for(auto& [key, entity]: entities) {
+		if(entity->isDead()) {
+			deadKeys.push_back(key);
+		}
+	}
+	for(auto& key: deadKeys) {
+		entities.erase(key);
+	}
+}
+
+std::string Activity::generateEntityKey() const
+{
+	std::random_device rd;
+	std::mt19937_64 mt(rd());
+	std::uniform_int_distribution<uint32_t> dist(0, std::numeric_limits<uint32_t>::max());
+
+	std::string ret;
+	do {
+		ret = al::Format("%08X%08X", dist(mt), dist(mt));
+	} while(entities.contains(ret));
+	return ret;
 }

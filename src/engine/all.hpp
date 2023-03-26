@@ -8,6 +8,7 @@
 #include "Engine.hpp"
 #include "Activity.hpp"
 #include "Entity.hpp"
+#include "Math.hpp"
 #include "entities/Image.hpp"
 #include "entities/SpatialEntity.hpp"
 #include "entities/Text.hpp"

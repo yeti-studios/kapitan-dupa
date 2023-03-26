@@ -5,6 +5,9 @@
 #include "game/activities/MenuActivity.hpp"
 #include "game/activities/HighscoresActivity.hpp"
 #include "game/activities/GameActivity.hpp"
+#include "game/activities/IntroLPGActivity.hpp"
+#include "game/activities/IntroYetiActivity.hpp"
+
 
 int main(int, char**) 
 {
@@ -16,8 +19,9 @@ int main(int, char**)
 	engine.createActivity<MenuActivity>("mainmenu");
 	engine.createActivity<GameActivity>("game");
 	engine.createActivity<HighscoresActivity>("highscores");
-	engine.switchToActivity("mainmenu");
-
+	engine.createActivity<IntroLPGActivity>("introlpg");
+	engine.createActivity<IntroYetiActivity>("introyeti");
+	engine.switchToActivity("introlpg");
 
 	engine.run();
 }

@@ -17,10 +17,12 @@ std::string EngineOptions::toJSON() const
 Engine::Engine(const EngineOptions &options)
 	: options(options),
 	  currentActivity(nullptr),
-	  defaultFont("res/neuropol.ttf", 18),
+	  defaultFont("res/neuropol.ttf", 24),
 	  disp(options.displaySize.x, options.displaySize.y),
 	  framerateLimitTimer(1.0 / options.maxFramerate.value_or(120.0))
 {
+	al::Bitmap::SetNewBitmapFlags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR | ALLEGRO_MIPMAP);
+
 	inputEventQueue.registerSource(al::GetKeyboardEventSource());
 	inputEventQueue.registerSource(al::GetMouseEventSource());
 	inputEventQueue.registerSource(disp.eventSource());
@@ -81,10 +83,13 @@ void Engine::run()
 			dispatcher.dispatch(inputEventQueue.pop());
 		}
 
-		if(currentActivity) {
+		if(auto* act1 = currentActivity) {
+			currentActivity->commonTick();
 			currentActivity->tick();
 			currentActivity->updateAllEntities();
+			currentActivity->preRender();
 			currentActivity->renderAllEntities();
+			currentActivity->postRender();
 		}
 
 		al::CurrentDisplay.flip();

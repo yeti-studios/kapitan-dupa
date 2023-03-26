@@ -22,6 +22,13 @@ public:
 
 	Activity* getActivity() const;
 	Engine* getEngine() const;
+	void kill();
+	bool isDead() const;
+
+	double timeSinceSpawn() const;
+protected:
+	double spawnTime = 0;
+	bool dead = false;
 private:
 	friend class Activity;
 	Activity* activity;

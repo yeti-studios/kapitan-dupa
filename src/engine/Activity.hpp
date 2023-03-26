@@ -8,6 +8,7 @@
 
 #include "Entity.hpp"
 #include "StringMap.hpp"
+#include "Math.hpp"
 
 class Engine;
 
@@ -26,11 +27,19 @@ public:
 		return {};
 	}
 
+	template<typename EntityT, typename... Args> requires std::is_base_of_v<Entity, EntityT>
+	std::shared_ptr<EntityT> spawnUnique(Args... args)
+	{
+		return spawn<EntityT>(generateEntityKey(), args...);
+	}
+
 	bool addEntity(std::string_view name, const std::shared_ptr<Entity>& entity);
 
 	void dispatchEvent(const ALLEGRO_EVENT& ev);
 	void renderAllEntities();
 	void updateAllEntities();
+
+	void commonTick();
 
 	virtual void init() = 0;
 	virtual void tick() = 0;
@@ -38,12 +47,17 @@ public:
 	virtual void start() = 0;
 	virtual void stop() = 0;
 
+	virtual void preRender();
+	virtual void postRender();
+
 	virtual bool handleEvent(const ALLEGRO_EVENT& ev);
 
 	Engine* getEngine() const;
 	void triggerStart();
 
 	double timeSinceStart() const;
+
+	std::string generateEntityKey() const;
 private:
 	friend class Engine;
 	void setEngine(Engine* pEngine);

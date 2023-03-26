@@ -16,6 +16,8 @@ public:
 
 	[[nodiscard]] al::Vec2f getPos() const;
 	[[nodiscard]] al::Vec2f getSize() const;
+
+	void setCenter(al::Vec2f pos);
 private:
 	al::Rect<float> rect_;
 };

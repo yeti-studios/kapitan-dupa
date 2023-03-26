@@ -11,8 +11,8 @@ struct Exception: public std::runtime_error {
 	using std::runtime_error::runtime_error;
 
 	template<typename... Args>
-	explicit Exception(const std::string_view fmt, Args... args)
-		: Exception(std::vformat(fmt, std::make_format_args(args...)))
+	explicit Exception(const char* fmt, Args... args)
+		: Exception(al::Format(fmt, args...))
 	{
 
 	}

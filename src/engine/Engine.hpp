@@ -13,7 +13,7 @@
 
 struct EngineOptions {
 	al::Vec2i displaySize = {800, 600};
-	std::optional<int> maxFramerate = 165;
+	std::optional<int> maxFramerate = 120;
 
 
 
@@ -29,7 +29,7 @@ public:
 	void createActivity(const std::string_view name)
 	{
 		if(activities.contains(name)) {
-			throw EngineException("Cannot create activity with duplicate name {}", name);
+			throw EngineException("Cannot create activity with duplicate name %s", std::string(name).c_str());
 		}
 		auto act = std::shared_ptr<Activity>(new T());
 		act->setEngine(this);
@@ -45,6 +45,7 @@ public:
 
 	const EngineOptions& getOptions();
 	void setExitFlag();
+
 private:
 	al::Display disp;
 	Activity* currentActivity;
@@ -58,6 +59,7 @@ private:
 	al::Timer framerateLimitTimer;
 	al::EventQueue inputEventQueue;
 	al::EventQueue timerEventQueue;
+
 };
 
 

@@ -21,3 +21,18 @@ void Entity::setActivity(Activity *activity1)
 {
 	activity = activity1;
 }
+
+void Entity::kill()
+{
+	dead = true;
+}
+
+bool Entity::isDead() const
+{
+	return dead;
+}
+
+double Entity::timeSinceSpawn() const
+{
+	return al::GetTime() - spawnTime;
+}

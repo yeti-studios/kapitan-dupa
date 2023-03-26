@@ -23,3 +23,10 @@ void SpatialEntity::setRect(al::Rect<float> rect)
 {
 	rect_ = rect;
 }
+
+void SpatialEntity::setCenter(al::Vec2f pos)
+{
+	auto currentCenter = rect_.center();
+	rect_ += pos - currentCenter;
+}
+

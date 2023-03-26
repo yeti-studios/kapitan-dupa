@@ -14,6 +14,10 @@ target_link_libraries(kptdupa PRIVATE axxegro)
 find_package(nlohmann_json REQUIRED)
 target_link_libraries(kptdupa PRIVATE nlohmann_json::nlohmann_json)
 
+if(WIN32)
+        target_link_options(kptdupa PRIVATE -mwindows)
+endif()
+
 target_include_directories(kptdupa PRIVATE src/pch)
 target_precompile_headers(kptdupa PRIVATE src/pch/kptdup_pch.hpp)
 

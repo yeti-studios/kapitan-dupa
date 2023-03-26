@@ -1,28 +1,28 @@
 //
 // Created by volt on 2023-02-25.
 //
-
+#include "../engine/all.hpp"
 #include "StarBackground.hpp"
-
-double randDouble()
-{
-	static std::random_device rd;
-	static std::mt19937_64 gen {rd()};
-	static std::uniform_real_distribution<double> dist;
-
-	return dist(gen);
-}
-
-al::Vec2f randVec2()
-{
-	return al::Vec2d {randDouble(), randDouble()};
-}
+//
+//double randDouble()
+//{
+//	static std::random_device rd;
+//	static std::mt19937_64 gen {rd()};
+//	static std::uniform_real_distribution<double> dist;
+//
+//	return dist(gen);
+//}
+//
+//al::Vec2f randVec2()
+//{
+//	return al::Vec2d {randDouble(), randDouble()};
+//}
 
 std::vector<al::Vec2f> randomPointSet(int size, al::Vec2f max)
 {
 	std::vector<al::Vec2f> ret(size);
 	for(int i=0; i<size; i++) {
-		ret[i] = randVec2().hadamard(max);
+		ret[i] = RandVec2().hadamard(max);
 	}
 	return ret;
 }

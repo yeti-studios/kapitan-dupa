@@ -17,6 +17,8 @@ public:
 	void start() override;
 	void stop() override;
 
+	void postRender() override;
+
 private:
 	al::AudioStream music;
 	std::shared_ptr<Button> btnReturn;

@@ -12,6 +12,7 @@
 class Image: public SpatialEntity {
 protected:
 	std::shared_ptr<al::Bitmap> bitmap;
+	std::optional<std::string> filename;
 public:
 	al::Color tint = al::White;
 
@@ -19,10 +20,12 @@ public:
 	explicit Image(const std::string& imgPath);
 	Image() = default;
 
+	void unload();
+
+	const al::Bitmap* bmp() const;
+
 	void render() override;
-
 	void update() override;
-
 	void handle(const ALLEGRO_EVENT &ev) override;
 };
 
